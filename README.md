@@ -43,5 +43,9 @@ El script cuenta con un panel selector interactivo que te permite calibrar el co
 ## Parada de Emergencia (Fail-Safe)
 El script tiene activado el sistema de seguridad nativo de PyAutoGUI. Si el ratón se desvía, el dibujo se desfasa o deseas detener la ejecución inmediatamente, arrastra el cursor del ratón con fuerza hacia la esquina superior izquierda de tu monitor (coordenada 0,0). El script se detendrá de inmediato de forma segura.
 
+## *Aviso importante sobre la selección de áreas:**
+Al arrastrar el recuadro para seleccionar el lienzo o la paleta, es posible que la línea roja se dibuje ligeramente desplazada (un poco más abajo) respecto a tu cursor. Esto es un desfase puramente visual causado por el escalado de pantalla (DPI) de Windows en Tkinter. Las coordenadas que registra el programa son las del cursor real, por lo que la selección final será totalmente precisa. Simplemente haz caso a la punta de tu ratón (el puntero en cruz) y no al recuadro visual de la línea roja.
+
+
 Desarrollado y optimizado por EloyGM.
 Contacto, actualizaciones y proyectos: eloygm.com
