@@ -278,7 +278,7 @@ class App:
         logo_frame = tk.Frame(self.root, bg="#000000", bd=1, relief="solid")
         logo_frame.pack(fill="x", padx=15, pady=(15, 10))
         
-        tk.Label(logo_frame, text="⚡ ELOYGM ⚡", bg="#000000", fg="#ffffff",
+        tk.Label(logo_frame, text="eloygm.com", bg="#000000", fg="#ffffff",
                  font=("Courier New", 18, "bold")).pack(pady=(8, 2))
         tk.Label(logo_frame, text="Gartic AutoDraw v4 Pro · GitHub Edition", bg="#000000", fg="#888888",
                  font=("Arial", 9, "bold")).pack(pady=(0, 8))
