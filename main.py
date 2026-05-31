@@ -1,4 +1,3 @@
-python
 import tkinter as tk
 from tkinter import filedialog, ttk, messagebox
 import pyautogui
@@ -7,6 +6,8 @@ from PIL import Image, ImageTk, ImageFilter
 import threading
 import math
 import random
+import os
+import webbrowser # Biblioteca nativa para abrir enlaces en el navegador
 
 # Forzar máxima velocidad de ejecución de PyAutoGUI
 pyautogui.FAILSAFE = True
@@ -268,27 +269,82 @@ class App:
         self.root.title("Gartic AutoDraw v4 - Monochromatic")
         self.root.geometry("400x790")
         self.root.configure(bg="#121212")
-        self.root.resizable(False, False)
+        
+        # Permitir redimensionar tanto horizontal como verticalmente
+        self.root.resizable(True, True)
+        self.root.minsize(400, 750) # Tamaño mínimo para que no se oculte el panel
+        
+        # Intentar cargar el icono de la ventana de forma segura (eloygm.png)
+        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "eloygm.png")
+        if os.path.exists(icon_path):
+            try:
+                img_icon = Image.open(icon_path)
+                self.root.icon_img = ImageTk.PhotoImage(img_icon)
+                self.root.iconphoto(False, self.root.icon_img)
+            except Exception:
+                pass
+
         self.build_ui()
 
     def build_ui(self):
         bg, fg, widget_bg = "#121212", "#ffffff", "#2c2c2c"
 
-        # ── EXCLUSIVO BRANDING TOP LOGO HEADER ──
+        # ── EXCLUSIVO BRANDING TOP LOGO HEADER (Modificado para cargar logo físico) ──
         logo_frame = tk.Frame(self.root, bg="#000000", bd=1, relief="solid")
         logo_frame.pack(fill="x", padx=15, pady=(15, 10))
         
-        tk.Label(logo_frame, text="eloygm.com", bg="#000000", fg="#ffffff",
-                 font=("Courier New", 18, "bold")).pack(pady=(8, 2))
-        tk.Label(logo_frame, text="Gartic AutoDraw v4 Pro · GitHub Edition", bg="#000000", fg="#888888",
-                 font=("Arial", 9, "bold")).pack(pady=(0, 8))
+        # Panel derecho dentro del header para enlaces sociales
+        social_frame = tk.Frame(logo_frame, bg="#000000")
+        social_frame.pack(side="right", padx=10, pady=5)
+        
+        # Estilo interactivo para enlaces de redes
+        def on_hover(event, lbl):
+            lbl.config(fg="#ffffff")
+        def on_leave(event, lbl):
+            lbl.config(fg="#888888")
+
+        # Link YouTube
+        yt_lbl = tk.Label(social_frame, text="YouTube", bg="#000000", fg="#888888", font=("Arial", 9, "underline", "bold"), cursor="hand2")
+        yt_lbl.pack(side="right", padx=6)
+        yt_lbl.bind("<Button-1>", lambda e: webbrowser.open("https://www.youtube.com/@eloygm"))
+        yt_lbl.bind("<Enter>", lambda e, l=yt_lbl: on_hover(e, l))
+        yt_lbl.bind("<Leave>", lambda e, l=yt_lbl: on_leave(e, l))
+
+        # Link Instagram
+        ig_lbl = tk.Label(social_frame, text="Instagram", bg="#000000", fg="#888888", font=("Arial", 9, "underline", "bold"), cursor="hand2")
+        ig_lbl.pack(side="right", padx=6)
+        ig_lbl.bind("<Button-1>", lambda e: webbrowser.open("https://www.instagram.com/eloygumo"))
+        ig_lbl.bind("<Enter>", lambda e, l=ig_lbl: on_hover(e, l))
+        ig_lbl.bind("<Leave>", lambda e, l=ig_lbl: on_leave(e, l))
+        
+        # Buscar "logo.png" o "logo.jpg" en la misma carpeta de ejecución
+        logo_loaded = False
+        for ext in ['.png', '.jpg', '.jpeg']:
+            logo_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f"logo{ext}")
+            if os.path.exists(logo_path):
+                try:
+                    img_logo = Image.open(logo_path)
+                    img_logo.thumbnail((200, 70), Image.Resampling.LANCZOS)
+                    self.logo_tk = ImageTk.PhotoImage(img_logo)
+                    
+                    self.logo_lbl = tk.Label(logo_frame, image=self.logo_tk, bg="#000000")
+                    self.logo_lbl.pack(side="left", padx=5, pady=8)
+                    logo_loaded = True
+                    break
+                except Exception:
+                    pass
+        
+        # Respaldo de texto si no hay archivo de imagen
+        if not logo_loaded:
+            tk.Label(logo_frame, text="eloygm.com", bg="#000000", fg="#ffffff",
+                     font=("Courier New", 16, "bold")).pack(side="left", padx=10, pady=12)
 
         # Preview de Imagen
         frm = tk.Frame(self.root, bg=widget_bg, bd=1, relief="solid")
         frm.pack(padx=15, fill="x")
         self.preview = tk.Label(frm, bg=widget_bg, text="Click para cargar recurso de imagen",
                                 fg="#aaaaaa", width=40, height=4, cursor="hand2", font=("Arial", 9, "bold"))
-        self.preview.pack(padx=5, pady=5)
+        self.preview.pack(padx=5, pady=5, fill="x", expand=True)
         self.preview.bind("<Button-1>", lambda e: self.pick_image())
 
         # Botones de calibración
@@ -353,7 +409,7 @@ class App:
         style.theme_use('default')
         style.configure("Mono.Horizontal.TProgressbar", troughcolor="#2c2c2c", background="#ffffff", borderwidth=0)
         self.progress = ttk.Progressbar(self.root, style="Mono.Horizontal.TProgressbar", length=360, mode="determinate")
-        self.progress.pack(pady=(10, 2))
+        self.progress.pack(pady=(10, 2), fill="x", padx=15)
 
         self.status_lbl = tk.Label(self.root, text="Sistema listo para inicialización.", bg=bg, fg="#888888", font=("Arial", 8))
         self.status_lbl.pack()
@@ -373,8 +429,8 @@ class App:
         row = tk.Frame(parent, bg="#121212")
         row.pack(fill="x", pady=2)
         tk.Label(row, text=label, bg="#121212", fg="#aaaaaa", font=("Arial", 8), width=28, anchor="w").pack(side="left")
-        tk.Scale(row, from_=from_, to=to, orient="horizontal", variable=var, bg="#121212", fg=f"#ffffff", 
-                 troughcolor="#2c2c2c", highlightthickness=0, length=120, showvalue=True).pack(side="right")
+        tk.Scale(row, from_=from_, to=to, orient="horizontal", variable=var, bg="#121212", fg="#ffffff", 
+                 troughcolor="#2c2c2c", highlightthickness=0, length=120, showvalue=True).pack(side="right", fill="x", expand=True)
 
     def pick_image(self):
         path = filedialog.askopenfilename(filetypes=[("Imágenes", "*.png *.jpg *.jpeg *.bmp *.gif *.webp")])
@@ -436,6 +492,28 @@ class App:
             self.set_status("Analizando matriz...")
             color_map = extract_pixels(state["img"], region[2], region[3], step, skip_white, state["smooth_image"])
             self.set_status("Ejecutando trazado de vectores...")
-            draw_image(region, color_map, step, speed, 
-                       progress_cb=lambda p: self.root.after(0, lambda: self.progress.configure(value=p)),
-                       status_cb=lambda m: s
+            
+            draw_image(
+                region, 
+                color_map, 
+                step, 
+                speed, 
+                progress_cb=lambda p: self.root.after(0, lambda: self.progress.configure(value=p)),
+                status_cb=lambda m: self.root.after(0, lambda: self.set_status(m))
+            )
+            self.root.after(0, self.finish)
+
+        threading.Thread(target=run, daemon=True).start()
+
+    def finish(self):
+        state["drawing"] = False
+        self.btn_draw.configure(state="normal")
+        self.btn_stop.configure(state="disabled")
+
+    def set_status(self, msg):
+        self.status_lbl.configure(text=msg)
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    App(root)
+    root.mainloop()
