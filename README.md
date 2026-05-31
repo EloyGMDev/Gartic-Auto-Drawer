@@ -1,5 +1,5 @@
 # Gartic AutoDraw
-Gartic AutoDraw v4 Pro es una herramienta de automatización avanzada diseñada para reproducir imágenes e ilustraciones de forma automática en plataformas de dibujo colaborativo como Gartic.io y Gartic Phone. Desarrollada con un enfoque híbrido de procesamiento de imágenes y simulación de hardware para evadir los sistemas heurísticos de detección de bots (anticheat).
+Gartic AutoDraw es una herramienta de automatización avanzada diseñada para reproducir imágenes e ilustraciones de forma automática en plataformas de dibujo colaborativo como Gartic.io y Gartic Phone. Desarrollada con un enfoque híbrido de procesamiento de imágenes y simulación de hardware para evadir los sistemas heurísticos de detección de bots (anticheat).
 Este proyecto ha sido optimizado y personalizado por EloyGM con una interfaz de usuario minimalista y monocromática (Dark Mode), ideal para su distribución pública en GitHub.
 ## Características Clave
  * **Evasión de Bloqueos (WebSocket Rate-Limiting):** Implementa un limitador de tasa mediante una ventana deslizante de tiempo (Sliding Window) que autogestiona el tráfico. Capa las peticiones de red por debajo de la barrera de seguridad de los servidores de Gartic (máximo 20 peticiones/segundo) para evitar baneos silenciosos intermitentes.
