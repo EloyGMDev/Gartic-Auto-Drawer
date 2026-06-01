@@ -41,7 +41,7 @@ Desarrollada con procesamiento de imágenes híbrido y simulación de hardware p
 
 ```bash
 # 1. Clona el repositorio
-git clone https://github.com/EloyGM/gartic-autodraw
+git clone https://github.com/EloyGMDev/Gartic-Auto-Drawer.git
 
 # 2. Instala las dependencias
 pip install pyautogui pillow
